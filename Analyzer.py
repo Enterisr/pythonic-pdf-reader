@@ -1,6 +1,6 @@
 import PyPDF2
 from gtts import gTTS
-def read_pdf_text(path):
+def read_pdf_text(path,q):
     extracted_text = ""
     with open(path,'rb') as file:
         reader = PyPDF2.PdfFileReader(file)
@@ -9,7 +9,7 @@ def read_pdf_text(path):
             extracted_text = extracted_text + page.extractText()
             precent = int(round(((i+1)/reader.numPages)*100))
             print(f"reading at {precent}%")
-    return extracted_text
+        q.put(extracted_text)
 
 def FormatToVoice(string_to_read,file_dest):
     tts = gTTS(string_to_read)
