@@ -1,5 +1,5 @@
 import PyPDF2
-from gtts import gTTS
+import pyttsx3
 def read_pdf_text(path,retured_value):
     extracted_text = ""
     if path:
@@ -12,7 +12,14 @@ def read_pdf_text(path,retured_value):
                 print(f"reading at {precent}%")
             retured_value.put(extracted_text)
 
-def FormatToVoice(string_to_read,file_dest):
-    tts = gTTS(string_to_read)
-    tts.save(file_dest)
+def onEnd(name, completed):
+   print('finished!!!!')
 
+def FormatToVoice(string_to_read,file_dest):
+    engine = pyttsx3.init()  # object creation
+    string_to_read.replace('/n', "")
+    engine.setProperty('rate', 150)
+    engine.connect('finished-utterance', onEnd)
+    engine.save_to_file(string_to_read, file_dest)
+
+    engine.runAndWait()
